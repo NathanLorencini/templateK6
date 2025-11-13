@@ -1,0 +1,18 @@
+src/
+├── tests/              # Pasta principal de testes
+│   ├── smoke/         # Testes rápidos/smoke tests
+│   │   └── smoke-test.ts
+│   ├── load/          # Testes de carga
+│   │   ├── basic-load-test.ts
+│   │   └── stress-test.ts
+│   ├── scenarios/     # Cenários de teste reutilizáveis
+│   │   ├── login.ts
+│   │   └── checkout.ts
+│   └── utils/         # Funções utilitárias compartilhadas
+│       ├── auth.ts
+│       └── helpers.ts
+├── data/              # Dados de teste (JSON, CSV)
+│   └── users.json
+└── config/            # Configurações por ambiente
+    ├── dev.json
+    └── staging.json
