@@ -25,10 +25,7 @@
   "scripts": {
     "bundle": "webpack",
     "build": "webpack",
-    "k61": "k6 run --env API_KEY --env API_V1",
-    "k62": "k6 run --env API_KEY --env API_V2",
-    "envs": "for /f \"usebackq tokens=1,* delims== \" %a in (.env) do @set \"%a=%b\"",
-    "test": "npm run build && npm run envs && k6 run dist/PostHome_test.js"
+    "test": "npm run build && npm run envs && k6 run dist/SEU_TESTE.js"
   },
   "dependencies": {
     "dotenv": "^17.2.3"
