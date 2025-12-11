@@ -1,5 +1,3 @@
-//import logo from '../assets/marcaAramis.png';
-
 // testesDeCarga/modules/reporter-globalsys.js
 export function gerarRelatorioGlobalsys(data, tipoTeste = 'carga', descricaoTeste = '', thresholdsDoTeste = {}) {
   function safeGet(obj, path, decimals = 2, defaultValue = 0) {
@@ -188,8 +186,8 @@ export function gerarRelatorioGlobalsys(data, tipoTeste = 'carga', descricaoTest
 </head>
 <body>
 <header>
-  <img src='../assets/marcaAramis.png' alt="Logo GLOBALSYS" onerror="this.style.display='none'">
-  <span><strong>Aramis - Relatório de Teste de Carga</strong></span>
+  <img src='../assets/suaImg.png' alt="Logo GLOBALSYS" onerror="this.style.display='none'">
+  <span><strong>Sua Empresa - Relatório de Teste de Carga</strong></span>
 </header>
 
 <div class="container">
@@ -198,7 +196,7 @@ export function gerarRelatorioGlobalsys(data, tipoTeste = 'carga', descricaoTest
   <div class="summary">
   <p><span class="tag">${tipoTeste.toUpperCase()}</span></p>
   <p><strong>Objetivo:</strong> ${descricaoTeste || 'Avaliar o desempenho e estabilidade do sistema sob carga.'}</p>
-  <p><strong>Aplicação:</strong> Aramis - Ambiente Dev</p>
+  <p><strong>Aplicação:</strong> Sua Empresa - Ambiente Dev</p>
   <p><strong>URL Testada:</strong> ${data?.config?.url || '-'}</p>
   <p><strong>Execução:</strong> ${
     (() => {
