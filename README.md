@@ -1,219 +1,136 @@
-Template K6 – Estrutura Base para Testes de Performance
-Template profissional e escalável para testes de performance com k6, oferecendo estrutura organizada, configuração simplificada e boas práticas de engenharia de qualidade.
+# Template K6 - Testes de Performance
 
-🎯 Sobre o Projeto
-Este template fornece uma base sólida para implementação de testes de performance (carga, stress, smoke) utilizando k6, com foco em:
+Template simplificado para testes de performance com k6.
 
-Organização clara: Estrutura de pastas intuitiva e escalável
-Configuração centralizada: Gerenciamento eficiente de variáveis de ambiente
-Produtividade: Scripts npm/yarn prontos para uso
-Reutilização: Componentes modulares e helpers compartilháveis
-Padronização: Convenções consistentes entre projetos
+## Estrutura do Projeto
 
-
-📁 Estrutura do Projeto
+```
 templateK6/
-│
 ├── src/
-│   ├── tests/              # Scripts de teste organizados por contexto/feature
-│   │   ├── smoke/          # Testes de fumaça (validação básica)
-│   │   ├── load/           # Testes de carga (comportamento sob carga esperada)
-│   │   └── stress/         # Testes de estresse (limites do sistema)
-│   │
-│   ├── utils/              # Funções auxiliares e helpers reutilizáveis
-│   │   ├── config.js       # Carregamento e validação de variáveis
-│   │   ├── helpers.js      # Funções utilitárias comuns
-│   │   └── scenarios.js    # Cenários de carga predefinidos
-│   │
-│   └── data/               # Dados de teste (payloads, CSVs, fixtures)
-│
-├── reports/                # Relatórios gerados (gitignored)
-├── .env.example            # Template de variáveis de ambiente
-├── .env                    # Variáveis de ambiente (não commitar)
-├── .gitignore
-├── package.json            # Scripts de execução e dependências
-├── k6.config.js            # Configurações globais do k6
+│   ├── tests/          # Scripts de testes
+│   └── utils/          # Funções reutilizáveis
+├── .env                # Variáveis de ambiente
+├── package.json        # Scripts de execução
 └── README.md
+```
 
-🔧 Pré-requisitos
-Certifique-se de ter instalado:
+## Pré-requisitos
 
-Node.js 18+ (Download)
-k6 (Guia de instalação)
+- Node.js 18+
+- k6 instalado: https://k6.io/docs/getting-started/installation/
 
-Verificar instalação
-bashnode --version
-k6 version
+## Instalação
 
-🚀 Instalação e Configuração
-1. Clone o repositório
-bashgit clone <url-do-repositorio>
-cd templateK6
-2. Instale as dependências
-bashnpm install
-# ou
-yarn install
-3. Configure as variáveis de ambiente
-Copie o arquivo de exemplo e ajuste os valores:
-bashcp .env.example .env
-Exemplo de .env:
-env# API Configuration
-BASE_URL=https://api.exemplo.com
-ACCESS_KEY=your_access_key_here
+```bash
+npm install
+```
+
+## Configuração
+
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+BASE_URL=https://suaapi.com
+ACCESS_KEY=seu_token_aqui
 BRAND=123
+```
 
-# Test Configuration
-VUS=10
-DURATION=30s
-ITERATIONS=100
-4. Carregue as variáveis (Windows CMD)
-Importante: Execute este comando antes de rodar os testes no CMD:
-cmdfor /f "usebackq tokens=1,* delims== " %a in (.env) do @set "%a=%b"
-Para PowerShell:
-powershellGet-Content .env | ForEach-Object { if ($_ -match '^([^=]+)=(.*)$') { [System.Environment]::SetEnvironmentVariable($matches[1], $matches[2]) } }
-Para Linux/Mac:
-bashexport $(cat .env | xargs)
+### Carregar variáveis de ambiente
 
-▶️ Executando os Testes
-Comandos disponíveis via npm/yarn
-bash# Executar teste smoke (validação rápida)
-npm run test:smoke
+**Windows CMD:**
+```cmd
+for /f "usebackq tokens=1,* delims== " %a in (.env) do @set "%a=%b"
+```
 
-# Executar teste de carga
-npm run test:load
+**PowerShell:**
+```powershell
+Get-Content .env | ForEach-Object { if ($_ -match '^([^=]+)=(.*)$') { [System.Environment]::SetEnvironmentVariable($matches[1], $matches[2]) } }
+```
 
-# Executar teste de stress
-npm run test:stress
+**Linux/Mac:**
+```bash
+export $(cat .env | xargs)
+```
 
-# Executar teste específico
-npm run test src/tests/seu-teste.js
-Execução direta com k6
-bash# Executar teste básico
-k6 run src/tests/smoke/health-check.js
+## Executando os Testes
 
-# Com configurações customizadas
-k6 run --vus 50 --duration 2m src/tests/load/api-load.js
+### Com npm/yarn
 
-# Gerando relatório JSON
-k6 run --out json=reports/results.json src/tests/load/api-load.js
+```bash
+npm run test
+```
 
-# Executar com tags específicas
-k6 run --tag ambiente=staging src/tests/smoke/health-check.js
+### Direto com k6
 
-⚙️ Usando Variáveis de Ambiente
-As variáveis do .env ficam disponíveis através de __ENV:
-javascriptimport http from 'k6/http';
+```bash
+k6 run src/tests/seu-teste.js
+```
 
-export default function () {
-  const url = `${__ENV.BASE_URL}/api/endpoint`;
-  const params = {
-    headers: {
-      'Authorization': `Bearer ${__ENV.ACCESS_KEY}`,
-      'Content-Type': 'application/json',
-    },
-  };
-  
-  const response = http.get(url, params);
-  check(response, {
-    'status is 200': (r) => r.status === 200,
-  });
-}
+### Com configurações customizadas
 
-📊 Relatórios e Métricas
-Saída para JSON
-bashk6 run --out json=reports/resultado.json src/tests/load/api-load.js
-Saída para InfluxDB
-bashk6 run --out influxdb=http://localhost:8086/k6 src/tests/load/api-load.js
-K6 Cloud
-bashk6 cloud src/tests/load/api-load.js
-Integração com Grafana
+```bash
+k6 run --vus 50 --duration 2m src/tests/seu-teste.js
+```
 
-Configure o InfluxDB como datasource
-Importe o dashboard oficial do k6: https://grafana.com/grafana/dashboards/2587
-Execute testes com output para InfluxDB
+### Gerando relatório JSON
 
-Exemplo de docker-compose para stack de observabilidade:
-yamlversion: '3.8'
-services:
-  influxdb:
-    image: influxdb:1.8
-    ports:
-      - "8086:8086"
-    environment:
-      - INFLUXDB_DB=k6
-  
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_AUTH_ANONYMOUS_ENABLED=true
+```bash
+k6 run --out json=resultado.json src/tests/seu-teste.js
+```
 
-📝 Exemplo de Teste Completo
-javascriptimport http from 'k6/http';
+## Exemplo de Teste
+
+```javascript
+import http from 'k6/http';
 import { check, sleep } from 'k6';
-import { Rate } from 'k6/metrics';
-
-// Métrica customizada
-const errorRate = new Rate('errors');
 
 export const options = {
-  stages: [
-    { duration: '1m', target: 20 },   // Ramp-up
-    { duration: '3m', target: 20 },   // Carga estável
-    { duration: '1m', target: 0 },    // Ramp-down
-  ],
-  thresholds: {
-    http_req_duration: ['p(95)<500'], // 95% das requisições < 500ms
-    errors: ['rate<0.1'],              // Taxa de erro < 10%
-  },
+  vus: 10,
+  duration: '30s',
 };
 
 export default function () {
-  const url = `${__ENV.BASE_URL}/api/users`;
-  const payload = JSON.stringify({ name: 'Test User' });
-  const params = {
-    headers: { 'Content-Type': 'application/json' },
-  };
-
-  const response = http.post(url, payload, params);
+  const url = `${__ENV.BASE_URL}/api/endpoint`;
+  const response = http.get(url);
   
-  const success = check(response, {
-    'status is 201': (r) => r.status === 201,
-    'response time < 500ms': (r) => r.timings.duration < 500,
+  check(response, {
+    'status é 200': (r) => r.status === 200,
   });
-
-  errorRate.add(!success);
+  
   sleep(1);
 }
+```
 
-🧪 Boas Práticas
+## Usando Variáveis de Ambiente no Código
 
-Modularize: Separe lógica de requisições, validações e configurações
-Use checks: Valide respostas para garantir qualidade dos testes
-Defina thresholds: Estabeleça critérios de sucesso claros
-Organize por tipo: Mantenha smoke, load e stress separados
-Versionamento: Não commite .env, use .env.example
-Documente: Adicione comentários explicando cenários complexos
+```javascript
+const url = `${__ENV.BASE_URL}/endpoint`;
+const token = __ENV.ACCESS_KEY;
+```
 
+## Relatórios
 
-🤝 Contribuindo
-Contribuições são muito bem-vindas! Para contribuir:
+**JSON:**
+```bash
+k6 run --out json=reports/resultado.json src/tests/teste.js
+```
 
-Faça um fork do projeto
-Crie uma branch para sua feature (git checkout -b feature/MinhaFeature)
-Commit suas mudanças (git commit -m 'Adiciona nova feature')
-Push para a branch (git push origin feature/MinhaFeature)
-Abra um Pull Request
+**InfluxDB:**
+```bash
+k6 run --out influxdb=http://localhost:8086/k6 src/tests/teste.js
+```
 
+**K6 Cloud:**
+```bash
+k6 cloud src/tests/teste.js
+```
 
-📚 Recursos Adicionais
+## Contribuindo
 
-Documentação oficial do k6
-Exemplos de testes
-Métricas disponíveis
-K6 Community Forum
+Pull Requests são bem-vindos! Sinta-se à vontade para abrir issues e sugerir melhorias.
 
+## Recursos
 
-📄 Licença
-Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
+- Documentação k6: https://k6.io/docs/
+- Exemplos: https://k6.io/docs/examples/
+- Community: https://community.k6.io/
